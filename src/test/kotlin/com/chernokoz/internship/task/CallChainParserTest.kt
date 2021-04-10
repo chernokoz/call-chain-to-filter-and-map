@@ -1,18 +1,18 @@
 package com.chernokoz.internship.task
 
 import com.chernokoz.internship.task.parser.CallParseException
-import com.chernokoz.internship.task.parser.Parser
+import com.chernokoz.internship.task.parser.CallChainParser
 import com.chernokoz.internship.task.tokens.FilterCall
 import com.chernokoz.internship.task.tokens.MapCall
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions
 
-class ParserTest {
+class CallChainParserTest {
 
     @Test
     fun basicTest() {
-        val parser = Parser()
+        val parser = CallChainParser()
         val tokens = parser.parse("filter{(element>10)}%>%filter{(element<20)}")
         assertEquals(2, tokens.size)
         assert(tokens[0] is FilterCall)
@@ -21,7 +21,7 @@ class ParserTest {
 
     @Test
     fun oneCallTest() {
-        val parser = Parser()
+        val parser = CallChainParser()
         val tokens = parser.parse("filter{(element>10)}")
         assertEquals(1, tokens.size)
         assert(tokens[0] is FilterCall)
@@ -29,7 +29,7 @@ class ParserTest {
 
     @Test
     fun unknownCallTest() {
-        val parser = Parser()
+        val parser = CallChainParser()
         Assertions.assertThrows(CallParseException::class.java) {
             parser.parse("flatMap{it+5}")
         }
@@ -37,7 +37,7 @@ class ParserTest {
 
     @Test
     fun emptyStringParsingTest() {
-        val parser = Parser()
+        val parser = CallChainParser()
         Assertions.assertThrows(CallParseException::class.java) {
             parser.parse("")
         }
@@ -45,7 +45,7 @@ class ParserTest {
 
     @Test
     fun mapFilterMapTest() {
-        val parser = Parser()
+        val parser = CallChainParser()
         val tokens = parser.parse("map{(element+239)}%>%filter{(element>10)}%>%map{(element-239)}")
         assertEquals(3, tokens.size)
         assert(tokens[0] is MapCall)

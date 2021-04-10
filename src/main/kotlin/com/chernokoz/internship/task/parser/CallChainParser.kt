@@ -4,7 +4,7 @@ import com.chernokoz.internship.task.tokens.Call
 import com.chernokoz.internship.task.tokens.FilterCall
 import com.chernokoz.internship.task.tokens.MapCall
 
-class Parser {
+class CallChainParser {
     private val chainPipe = "%>%"
 
     fun parse(line: String): List<Call> {
@@ -17,7 +17,7 @@ class Parser {
         return tokensList
     }
 
-    private fun parseCall(call: String) : Call {
+    private fun parseCall(call: String): Call {
         return when {
             validateFilterCall(call) -> parseFilter(call)
             validateMapCall(call)    -> parseMap(call)
@@ -25,27 +25,27 @@ class Parser {
         }
     }
 
-    private fun validateFilterCall(call: String) : Boolean {
+    private fun validateFilterCall(call: String): Boolean {
         return call.length >= 8
                 && call.startsWith("filter")
                 && call[6] == '{'
                 && call[call.lastIndex] == '}'
     }
 
-    private fun validateMapCall(call: String) : Boolean {
+    private fun validateMapCall(call: String): Boolean {
         return call.length >= 5
                 && call.startsWith("map")
                 && call[3] == '{'
                 && call[call.lastIndex] == '}'
     }
 
-    private fun parseFilter(call: String) : FilterCall {
+    private fun parseFilter(call: String): FilterCall {
         val filterExpression = call.substring(7, call.lastIndex)
         print(filterExpression)
         return FilterCall()
     }
 
-    private fun parseMap(call: String) : MapCall {
+    private fun parseMap(call: String): MapCall {
         val mapExpression = call.substring(4, call.lastIndex)
         print(mapExpression)
         return MapCall()
