@@ -1,8 +1,8 @@
 package com.chernokoz.internship.task.parser
 
-import com.chernokoz.internship.task.tokens.Call
-import com.chernokoz.internship.task.tokens.FilterCall
-import com.chernokoz.internship.task.tokens.MapCall
+import com.chernokoz.internship.task.token.Call
+import com.chernokoz.internship.task.token.FilterCall
+import com.chernokoz.internship.task.token.MapCall
 
 class CallChainParser {
     private val chainPipe = "%>%"
@@ -41,13 +41,13 @@ class CallChainParser {
 
     private fun parseFilter(call: String): FilterCall {
         val filterExpression = call.substring(7, call.lastIndex)
-        print(filterExpression)
-        return FilterCall()
+        val expression = ExpressionParser().parse(filterExpression)
+        return FilterCall(expression)
     }
 
     private fun parseMap(call: String): MapCall {
         val mapExpression = call.substring(4, call.lastIndex)
-        print(mapExpression)
-        return MapCall()
+        val expression = ExpressionParser().parse(mapExpression)
+        return MapCall(expression)
     }
 }

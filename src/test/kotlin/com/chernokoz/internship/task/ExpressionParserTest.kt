@@ -42,7 +42,7 @@ class ExpressionParserTest {
         val binaryExpression = expression as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('+', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is ConstantExpression)
+        assert(binaryExpression.secondOperand is ConstantExpression)
     }
 
     @Test
@@ -59,7 +59,7 @@ class ExpressionParserTest {
         val binaryExpression = expression as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('-', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is ElementExpression)
+        assert(binaryExpression.secondOperand is ElementExpression)
     }
 
     @Test
@@ -70,27 +70,52 @@ class ExpressionParserTest {
     }
 
     @Test
-    fun hardBinaryNestingExpressions() {
+    fun rightNestingBinaryExpressions() {
         val expression = ExpressionParser().parse("(1-(1+(1*(1-element))))")
         assert(expression is BinaryExpression)
         var binaryExpression = expression as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('-', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is BinaryExpression)
+        assert(binaryExpression.secondOperand is BinaryExpression)
 
-        binaryExpression = binaryExpression.secondOperation as BinaryExpression
+        binaryExpression = binaryExpression.secondOperand as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('+', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is BinaryExpression)
+        assert(binaryExpression.secondOperand is BinaryExpression)
 
-        binaryExpression = binaryExpression.secondOperation as BinaryExpression
+        binaryExpression = binaryExpression.secondOperand as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('*', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is BinaryExpression)
+        assert(binaryExpression.secondOperand is BinaryExpression)
 
-        binaryExpression = binaryExpression.secondOperation as BinaryExpression
+        binaryExpression = binaryExpression.secondOperand as BinaryExpression
         assert(binaryExpression.firstOperand is ConstantExpression)
         assertEquals('-', binaryExpression.operation)
-        assert(binaryExpression.secondOperation is ElementExpression)
+        assert(binaryExpression.secondOperand is ElementExpression)
+    }
+
+    @Test
+    fun leftNestingBinaryExpressions() {
+        val expression = ExpressionParser().parse("((((-5-element)-1)+2)*2)")
+        assert(expression is BinaryExpression)
+        var binaryExpression = expression as BinaryExpression
+        assert(binaryExpression.firstOperand is BinaryExpression)
+        assertEquals('*', binaryExpression.operation)
+        assert(binaryExpression.secondOperand is ConstantExpression)
+
+        binaryExpression = binaryExpression.firstOperand as BinaryExpression
+        assert(binaryExpression.firstOperand is BinaryExpression)
+        assertEquals('+', binaryExpression.operation)
+        assert(binaryExpression.secondOperand is ConstantExpression)
+
+        binaryExpression = binaryExpression.firstOperand as BinaryExpression
+        assert(binaryExpression.firstOperand is BinaryExpression)
+        assertEquals('-', binaryExpression.operation)
+        assert(binaryExpression.secondOperand is ConstantExpression)
+
+        binaryExpression = binaryExpression.firstOperand as BinaryExpression
+        assert(binaryExpression.firstOperand is ConstantExpression)
+        assertEquals('-', binaryExpression.operation)
+        assert(binaryExpression.secondOperand is ElementExpression)
     }
 }
