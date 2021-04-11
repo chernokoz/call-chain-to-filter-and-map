@@ -22,7 +22,7 @@ class CallChainParser {
         return when {
             validateFilterCall(call) -> parseFilter(call)
             validateMapCall(call)    -> parseMap(call)
-            else                     -> throw CallParseException("Unknown call")
+            else                     -> throw SyntaxErrorException("unknown call")
         }
     }
 
@@ -43,7 +43,7 @@ class CallChainParser {
     private fun parseFilter(call: String): FilterCall {
         val filterExpression = call.substring(7, call.lastIndex)
         val expression = ExpressionParser().parse(filterExpression)
-        if (!expression.isLogical) throw CallParseException("not logical expression in filter")
+        if (!expression.isLogical) throw UnexpectedExpressionTypeException("not logical expression in filter")
         return FilterCall(expression)
     }
 
@@ -51,7 +51,7 @@ class CallChainParser {
         val mapExpression = call.substring(4, call.lastIndex)
         val expression = ExpressionParser().parse(mapExpression)
         if (expression.type != ExpressionType.ALGEBRAIC_FUNCTION)
-            throw CallParseException("expression in map is not algebraic function")
+            throw UnexpectedExpressionTypeException("expression in map is not algebraic function")
         return MapCall(expression)
     }
 }

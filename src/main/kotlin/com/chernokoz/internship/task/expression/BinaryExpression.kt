@@ -1,6 +1,7 @@
 package com.chernokoz.internship.task.expression
 
 import com.chernokoz.internship.task.parser.ExpressionParseException
+import com.chernokoz.internship.task.parser.UnexpectedExpressionTypeException
 
 class BinaryExpression(
     val firstOperand: Expression,
@@ -38,7 +39,7 @@ class BinaryExpression(
                 if (containsElement) ExpressionType.LOGICAL_FUNCTION
                     else ExpressionType.LOGICAL_CONSTANT
             }
-            else -> throw ExpressionParseException()
+            else -> throw UnexpectedExpressionTypeException("unexpected types combination in binary expression")
         }
     }
 

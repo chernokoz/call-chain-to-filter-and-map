@@ -5,6 +5,7 @@ import com.chernokoz.internship.task.expression.ConstantExpression
 import com.chernokoz.internship.task.expression.ElementExpression
 import com.chernokoz.internship.task.parser.ExpressionParseException
 import com.chernokoz.internship.task.parser.ExpressionParser
+import com.chernokoz.internship.task.parser.SyntaxErrorException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,10 +20,10 @@ class ExpressionParserTest {
 
     @Test
     fun elementWithAfterSymbolsTest() {
-        assertThrows<ExpressionParseException> {
+        assertThrows<SyntaxErrorException> {
             ExpressionParser().parse("element-")
         }
-        assertThrows<ExpressionParseException> {
+        assertThrows<SyntaxErrorException> {
             ExpressionParser().parse("element)")
         }
     }
@@ -47,7 +48,7 @@ class ExpressionParserTest {
 
     @Test
     fun binaryExpressionWithoutBrackets() {
-        assertThrows<ExpressionParseException> {
+        assertThrows<SyntaxErrorException> {
             ExpressionParser().parse("5+2")
         }
     }
@@ -64,7 +65,7 @@ class ExpressionParserTest {
 
     @Test
     fun symbolsAfterParsedExpression() {
-        assertThrows<ExpressionParseException> {
+        assertThrows<SyntaxErrorException> {
             ExpressionParser().parse("(1-element)123")
         }
     }

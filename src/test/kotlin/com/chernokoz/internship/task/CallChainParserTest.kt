@@ -1,8 +1,8 @@
 package com.chernokoz.internship.task
 
-import com.chernokoz.internship.task.parser.CallParseException
+import com.chernokoz.internship.task.parser.SyntaxErrorException
 import com.chernokoz.internship.task.parser.CallChainParser
-import com.chernokoz.internship.task.parser.ExpressionParseException
+import com.chernokoz.internship.task.parser.UnexpectedExpressionTypeException
 import com.chernokoz.internship.task.token.FilterCall
 import com.chernokoz.internship.task.token.MapCall
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -32,7 +32,7 @@ class CallChainParserTest {
     @Test
     fun unknownCallTest() {
         val parser = CallChainParser()
-        Assertions.assertThrows(CallParseException::class.java) {
+        Assertions.assertThrows(SyntaxErrorException::class.java) {
             parser.parse("flatMap{it+5}")
         }
     }
@@ -40,7 +40,7 @@ class CallChainParserTest {
     @Test
     fun emptyStringParsingTest() {
         val parser = CallChainParser()
-        Assertions.assertThrows(CallParseException::class.java) {
+        Assertions.assertThrows(SyntaxErrorException::class.java) {
             parser.parse("")
         }
     }
@@ -58,6 +58,6 @@ class CallChainParserTest {
     @Test
     fun badMapExpressionTest() {
         val parser = CallChainParser()
-        assertThrows<CallParseException> { parser.parse("map{(element>239)}") }
+        assertThrows<UnexpectedExpressionTypeException> { parser.parse("map{(element>239)}") }
     }
 }
