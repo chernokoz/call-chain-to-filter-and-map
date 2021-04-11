@@ -3,7 +3,6 @@ package com.chernokoz.internship.task
 import com.chernokoz.internship.task.expression.BinaryExpression
 import com.chernokoz.internship.task.expression.ConstantExpression
 import com.chernokoz.internship.task.expression.ElementExpression
-import com.chernokoz.internship.task.parser.ExpressionParseException
 import com.chernokoz.internship.task.parser.ExpressionParser
 import com.chernokoz.internship.task.parser.SyntaxErrorException
 import org.junit.jupiter.api.Assertions.assertEquals

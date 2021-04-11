@@ -30,7 +30,7 @@ class ConverterTest {
         )
         val res = Converter().convert(callChain)
         assertEquals("map{element}", res.mapCall.toString())
-        assertEquals("filter{(((1=1)&(5<element))&(7>element))}", res.filterCall.toString())
+        assertEquals("filter{((5<element)&(7>element))}", res.filterCall.toString())
     }
 
     @Test
@@ -41,7 +41,7 @@ class ConverterTest {
         )
         val res = Converter().convert(callChain)
         assertEquals("map{(8+element)}", res.mapCall.toString())
-        assertEquals("filter{((1=1)&(3<element))}", res.filterCall.toString())
+        assertEquals("filter{(3<element)}", res.filterCall.toString())
     }
 
     @Test
@@ -52,7 +52,7 @@ class ConverterTest {
         )
         val res = Converter().convert(callChain)
         assertEquals("map{(8+element)}", res.mapCall.toString())
-        assertEquals("filter{((1=1)&(3<(8+element)))}", res.filterCall.toString())
+        assertEquals("filter{(3<(8+element))}", res.filterCall.toString())
     }
 
     @Test
@@ -64,7 +64,7 @@ class ConverterTest {
         )
         val res = Converter().convert(callChain)
         assertEquals("map{((element+10)*(element+10))}", res.mapCall.toString())
-        assertEquals("filter{((1=1)&((element+10)>10))}", res.filterCall.toString())
+        assertEquals("filter{((element+10)>10)}", res.filterCall.toString())
     }
 
     @Test
@@ -76,6 +76,6 @@ class ConverterTest {
         )
         val res = Converter().convert(callChain)
         assertEquals("map{(element*2)}", res.mapCall.toString())
-        assertEquals("filter{(((1=1)&(element>5))&((element*2)<50))}", res.filterCall.toString())
+        assertEquals("filter{((element>5)&((element*2)<50))}", res.filterCall.toString())
     }
 }

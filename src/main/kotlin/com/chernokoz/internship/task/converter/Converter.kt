@@ -24,10 +24,10 @@ class Converter {
                     filterExpression = BinaryExpression(
                         filterExpression,
                         '&',
-                        call.expression.apply(mapExpression))
+                        call.expression.applyAndSimplify(mapExpression)).simplify()
                 }
                 is MapCall -> {
-                    mapExpression = call.expression.apply(mapExpression)
+                    mapExpression = call.expression.applyAndSimplify(mapExpression)
                 }
             }
         }

@@ -44,7 +44,7 @@ class CallChainParser {
         val filterExpression = call.substring(7, call.lastIndex)
         val expression = ExpressionParser().parse(filterExpression)
         if (!expression.isLogical) throw UnexpectedExpressionTypeException("not logical expression in filter")
-        return FilterCall(expression)
+        return FilterCall(expression.simplify())
     }
 
     private fun parseMap(call: String): MapCall {
@@ -52,6 +52,6 @@ class CallChainParser {
         val expression = ExpressionParser().parse(mapExpression)
         if (expression.type != ExpressionType.ALGEBRAIC_FUNCTION)
             throw UnexpectedExpressionTypeException("expression in map is not algebraic function")
-        return MapCall(expression)
+        return MapCall(expression.simplify())
     }
 }

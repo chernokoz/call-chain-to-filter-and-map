@@ -34,6 +34,10 @@ abstract class Expression(val containsElement: Boolean) {
     val isFalse: Boolean
         get() = this == falseFilterExpression
 
+    fun applyAndSimplify(expression: Expression): Expression {
+        return apply(expression).simplify()
+    }
+
     abstract fun apply(expression: Expression): Expression
 
     abstract fun simplify(): Expression
