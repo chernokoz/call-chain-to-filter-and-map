@@ -11,17 +11,28 @@ abstract class Expression(val containsElement: Boolean) {
             ConstantExpression(1),
             '=',
             ConstantExpression(1))
+        val falseFilterExpression = BinaryExpression(
+            ConstantExpression(1),
+            '=',
+            ConstantExpression(0))
+
+        fun getLogicConstant(constant: Boolean): BinaryExpression {
+            return when (constant) {
+                true -> trueFilterExpression
+                false -> falseFilterExpression
+            }
+        }
     }
     abstract val type: ExpressionType
 
     val isLogical: Boolean
-        get() {
-            return type == ExpressionType.LOGICAL_CONSTANT || type == ExpressionType.LOGICAL_FUNCTION
-        }
-    val isAlgebraic: Boolean
-        get() {
-            return type == ExpressionType.ALGEBRAIC_CONSTANT || type == ExpressionType.ALGEBRAIC_FUNCTION
-        }
+        get() = type == ExpressionType.LOGICAL_CONSTANT || type == ExpressionType.LOGICAL_FUNCTION
+    val isAlgebraic:Boolean
+        get() = type == ExpressionType.ALGEBRAIC_CONSTANT || type == ExpressionType.ALGEBRAIC_FUNCTION
+    val isTrue: Boolean
+        get() = this == trueFilterExpression
 
     abstract fun apply(expression: Expression): Expression
+
+    abstract fun simplify(): Expression
 }
