@@ -1,5 +1,6 @@
 package com.chernokoz.internship.task.parser
 
+import com.chernokoz.internship.task.expression.ExpressionType
 import com.chernokoz.internship.task.token.Call
 import com.chernokoz.internship.task.token.FilterCall
 import com.chernokoz.internship.task.token.MapCall
@@ -42,12 +43,15 @@ class CallChainParser {
     private fun parseFilter(call: String): FilterCall {
         val filterExpression = call.substring(7, call.lastIndex)
         val expression = ExpressionParser().parse(filterExpression)
+        if (!expression.isLogical) throw CallParseException("not logical expression in filter")
         return FilterCall(expression)
     }
 
     private fun parseMap(call: String): MapCall {
         val mapExpression = call.substring(4, call.lastIndex)
         val expression = ExpressionParser().parse(mapExpression)
+        if (expression.type != ExpressionType.ALGEBRAIC_FUNCTION)
+            throw CallParseException("expression in map is not algebraic function")
         return MapCall(expression)
     }
 }

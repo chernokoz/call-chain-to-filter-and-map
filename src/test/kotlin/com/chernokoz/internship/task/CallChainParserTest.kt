@@ -2,11 +2,13 @@ package com.chernokoz.internship.task
 
 import com.chernokoz.internship.task.parser.CallParseException
 import com.chernokoz.internship.task.parser.CallChainParser
+import com.chernokoz.internship.task.parser.ExpressionParseException
 import com.chernokoz.internship.task.token.FilterCall
 import com.chernokoz.internship.task.token.MapCall
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.assertThrows
 
 class CallChainParserTest {
 
@@ -53,4 +55,9 @@ class CallChainParserTest {
         assert(tokens[2] is MapCall)
     }
 
+    @Test
+    fun badMapExpressionTest() {
+        val parser = CallChainParser()
+        assertThrows<CallParseException> { parser.parse("map{(element>239)}") }
+    }
 }

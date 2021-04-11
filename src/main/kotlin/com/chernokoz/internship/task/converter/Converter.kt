@@ -20,9 +20,7 @@ class Converter {
                         call.expression.apply(mapExpression))
                 }
                 is MapCall -> {
-                    println(call.expression)
                     mapExpression = call.expression.apply(mapExpression)
-                    println("updated mapExpression: $mapExpression")
                 }
             }
         }
