@@ -48,6 +48,7 @@ class BinaryExpression(
         var res = BinaryExpression(firstOperand, operation, secondOperand)
         res = res.simplifyComparing()
         res = res.simplifyWithTrue()
+        res = res.simplifyWithFalse()
         return res
     }
 
@@ -71,6 +72,17 @@ class BinaryExpression(
             return when {
                 operation == '|' -> trueFilterExpression
                 firstOperand.isTrue -> secondOperand as BinaryExpression
+                else -> firstOperand as BinaryExpression
+            }
+        }
+        return this
+    }
+
+    private fun simplifyWithFalse(): BinaryExpression {
+        if (logicalOperations.contains(operation) && (firstOperand.isFalse || secondOperand.isFalse)) {
+            return when {
+                operation == '&' -> falseFilterExpression
+                firstOperand.isFalse -> secondOperand as BinaryExpression
                 else -> firstOperand as BinaryExpression
             }
         }

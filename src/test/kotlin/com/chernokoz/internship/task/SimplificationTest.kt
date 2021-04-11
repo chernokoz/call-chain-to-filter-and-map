@@ -36,7 +36,34 @@ class SimplificationTest {
 
     @Test
     fun simplifyWithTrueTest() {
-        val expression = ExpressionParser().parse("((1=1)&(5>7))")
+        val expression = ExpressionParser().parse("((1=1)&(element>7))")
+        assertEquals("(element>7)", expression.simplify().toString())
+    }
+
+    @Test
+    fun simplifyWithFalseTest() {
+        val expression = ExpressionParser().parse("((1=0)|(element>7))")
+        assertEquals("(element>7)", expression.simplify().toString())
+    }
+
+    @Test
+    fun simplifyWithTrueManyStepsTest() {
+        val expression = ExpressionParser().parse("(((1=1)&(element>7))&(5=5))")
+        assertEquals("(element>7)", expression.simplify().toString())
+    }
+
+    @Test
+    fun simplifyWithFalseManyStepsTest() {
+        var expression = ExpressionParser().parse("(((1=2)|(element>7))&(5>7))")
+        assertEquals("(1=0)", expression.simplify().toString())
+
+        expression = ExpressionParser().parse("(((1=2)|(element>7))|(5>7))")
+        assertEquals("(element>7)", expression.simplify().toString())
+    }
+
+    @Test
+    fun simplifyWithFalseAndTrueTest() {
+        var expression = ExpressionParser().parse("(((1=2)|((1=0)&(element>7)))&(5>7))")
         assertEquals("(1=0)", expression.simplify().toString())
     }
 }

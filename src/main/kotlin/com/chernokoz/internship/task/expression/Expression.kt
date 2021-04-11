@@ -31,6 +31,8 @@ abstract class Expression(val containsElement: Boolean) {
         get() = type == ExpressionType.ALGEBRAIC_CONSTANT || type == ExpressionType.ALGEBRAIC_FUNCTION
     val isTrue: Boolean
         get() = this == trueFilterExpression
+    val isFalse: Boolean
+        get() = this == falseFilterExpression
 
     abstract fun apply(expression: Expression): Expression
 
